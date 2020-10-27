@@ -1,4 +1,4 @@
-__VERSION__ = "v0.0.0"
+__VERSION__ = "v0.0.1"
 
 def main():
     print("Aliya!")
