@@ -1,4 +1,3 @@
-import fire
-from .cli import Cli
+from . import main
 
-fire.Fire(Cli)
+main()
