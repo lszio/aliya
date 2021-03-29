@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+ALIYA=${ALIYA:-~/.aliya}
+export ALIYA=$ALIYA
+export PATH="$ALIYA/bin:$PATH"
+
+[ "$WSL_DISTRO_NAME" ] && {
+    WIN_HOST=$(ip route | awk '{print $3; exit}')
+    export WIN_HOST=$WIN_HOST
+    export LIBGL_ALWAYS_INDIRECT=1
+    export DISPLAY=$WIN_HOST:0
+}
+
+[ -d "$ALIYA/app/roswell" ] && {
+    export ROSWELL_HOME="$ALIYA/app/roswell"
+    export PATH="$ROSWELL_HOME/bin:$PATH"
+}

@@ -7,3 +7,6 @@ tmp/
 *.egg*
 __pycache__
 build
+dist
+temp
+cache
