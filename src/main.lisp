@@ -1,7 +1,7 @@
 (defpackage aliya
-  (:use :cl)
+  (:use :cl :uiop)
   (:export :hello))
 (in-package :aliya)
 
 (defun hello ()
-  (format t "~a" "hello))
+  (format t "~a ~a" "Hello" (uiop:getenv "USER")))

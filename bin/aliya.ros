@@ -5,14 +5,16 @@ exec ros -Q -- $0 "$@"
 |#
 (progn ;;init forms
   (ros:ensure-asdf)
-  #+quicklisp(ql:quickload '() :silent t)
-  )
-
+  #+quicklisp(ql:quickload '() :silent t))
+  
 (defpackage :ros.script.aliya.3825906675
   (:use :cl))
 (in-package :ros.script.aliya.3825906675)
 
+(asdf:load-asd #p"/home/liszt/.aliya/aliya.asd")
+(ql:quickload :aliya)
+
 (defun main (&rest argv)
   (declare (ignorable argv))
-  (format t "~a" "Hello Aliya!!!"))
+  (aliya:hello))
 ;;; vim: set ft=lisp lisp:
