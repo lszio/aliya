@@ -3,6 +3,18 @@
 ** Usage
 
 ** Installation
+*** Linux
+#+begin_src shell
+curl -L https://raw.githubusercontent.com/Liszt21/Aliya/master/app/setup/linux.sh | bash
+#+end_src
+
+#+RESULTS:
+
+*** Windows
+#+begin_src powershell
+iwr -useb  https://raw.githubusercontent.com/Liszt21/Aliya/master/app/setup/windows.ps1 | iex
+#+end_src
+
 
 ** Author
 
