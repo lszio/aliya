@@ -102,9 +102,9 @@ function install() {
 }
 
 function finish() {
-    text-in-file "config/entry" "$RC_FILE" || {
+    text-in-file "etc/entry" "$RC_FILE" || {
         echo "Write entry to $RC_FILE"
-        echo "source $ALIYA/config/entry" >> "$RC_FILE"
+        echo "source $ALIYA/etc/entry" >> "$RC_FILE"
     }
 }
 
@@ -114,7 +114,7 @@ function uninstall() {
         rm -rf "$ALIYA"
     }
 
-    text-in-file "config/entry" "$RC_FILE" && {
+    text-in-file "etc/entry" "$RC_FILE" && {
         echo "Removing entry from $RC_FILE"
         sed -i "/entry/d" "$RC_FILE"
     }

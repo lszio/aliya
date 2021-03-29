@@ -9,4 +9,8 @@ __pycache__
 build
 dist
 temp
-cache
+
+/app/*
+!/app/setup/
+
+
