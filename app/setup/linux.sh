@@ -88,11 +88,11 @@ function install() {
     }
 
     echo "Installing roswell..."
-    [ ! -d "$ALIYA/cache/rsowell" ] && {
+    [ ! -d "$ALIYA/tmp/roswell" ] && {
         echo "Cloning roswell..."
-        git clone -b release https://github.com/roswell/roswell.git $ALIYA/cache/roswell
+        git clone -b release https://github.com/roswell/roswell.git $ALIYA/tmp/roswell
     }
-    cd $ALIYA/cache/roswell
+    cd $ALIYA/tmp/roswell
     sh bootstrap
     ./configure --prefix=$ROSWELL_HOME
     make
