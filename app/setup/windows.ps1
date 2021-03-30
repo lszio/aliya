@@ -22,11 +22,14 @@ function install() {
     if (!$INSTALLED) {
         Invoke-Expression (new-object net.webclient).downloadstring('https://get.scoop.sh')
         scoop update
-        scoop install git
+        scoop install git sudo ln lxrunoffline fd ripgrep curl make
         scoop bucket add extras
-        scoop bucket add java    
+        scoop bucket add java  
+        scoop bucket add nerd-fonts  
         if ($ISME) {
-            scoop install sudo ln v2ray v2rayn emacs firefox roswell
+            scoop install v2ray v2rayn emacs atom vim vscode yarn pyenv nvm roswell julia openjdk
+            scoop install googlechrome firefox sumatrapdf potplayer vcxsrv snipaste
+            scoop install firecode sarasagothic-sc 
         }
     }
 
