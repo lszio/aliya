@@ -1,46 +1,86 @@
 function check() {
     Write-Output "Checking..."
-    if ($ENV:USERNAME -eq 'liszt') {
-        $ISME = $true
-    }
-    else {
-        $ISME = $false
-    }
 
-    $ENV:HOME = "C:\User\$ENV:USERNAME"
-    if ($ISME) {
-        $ENV:SCOOP = 'C:\Liszt\Scoop'
-        $ENV:ALIYA = "C:\Liszt\Aliya"
+    if (!$ENV:HOME) {
+        $ENV:HOME = "C:\Users\$ENV:USERNAME" # 默认盘符
+        [environment]::setEnvironmentVariable('HOME', $ENV:HOME, 'User')
     }
-    else {
-        $ENV:SCOOP = "$ENV:HOME\Scoop"
-        $ENV:ALIYA = "$ENV:HOME\Aliya"
+    
+    if (!$ENV:SCOOP) {
+        $ENV:SCOOP = If ($ISME) { 'C:\Liszt\Scoop' } Else { "$ENV:HOME\Scoop" }
+        [environment]::setEnvironmentVariable('SCOOP', $ENV:SCOOP, 'User')
     }
-    [environment]::setEnvironmentVariable('HOME', $ENV:HOME, 'User')
-    [environment]::setEnvironmentVariable('SCOOP', $ENV:SCOOP, 'User')
-    [environment]::SetEnvironmentVariable("ALIYA", $ENV:ALIYA, "User")
-}
-
-function main() {
-    Write-Output "Hello $ENV:USERNAME"
-    check
-    install
+    
+    if (!$ENV:ALIYA) {
+        $ENV:ALIYA = If ($ISME) { 'C:\Liszt\Aliya' } Else { "$ENV:HOME\Aliya" }
+        [environment]::SetEnvironmentVariable("ALIYA", $ENV:ALIYA, "User")
+    }
 }
 
 function install() {
     Write-Output "Installing..."
-    Invoke-Expression (new-object net.webclient).downloadstring('https://get.scoop.sh')
-
-    scoop install git
-    scoop bucket add extras
-
-    if ($ISME) {
-        scoop install sudo ln
+    if (!$INSTALLED) {
+        Invoke-Expression (new-object net.webclient).downloadstring('https://get.scoop.sh')
+        scoop update
+        scoop install git sudo ln lxrunoffline fd ripgrep curl make
+        scoop bucket add extras
+        scoop bucket add java  
+        scoop bucket add nerd-fonts  
+        if ($ISME) {
+            scoop install v2ray v2rayn emacs atom vim vscode yarn pyenv nvm roswell julia openjdk
+            scoop install googlechrome firefox sumatrapdf potplayer vcxsrv snipaste
+            scoop install firecode sarasagothic-sc 
+        }
     }
+
+    if (!(Test-Path $ENV:ALIYA)){
+        echo "Cloning aliya..."
+        git clone http://github.com/Liszt21/Aliya $ENV:ALIYA
+    }
+
+
 }
 
 function uninstall() {
     Write-Output "Uninstalling..."
+    if (!$INSTALLED) {
+        Write-Output "Scoop is not installed"
+        exit
+    }
 }
 
-main
+function Test-Command($command) {
+    $ErrorActionPreference = 'stop'
+    try {
+        Get-Command $command | Out-Null
+        return $true
+    }
+    catch {
+        Write-Output "Errorrr"
+        return $false
+    }
+}
+
+function Ping($url) {
+    $ErrorActionPreference = 'stop'
+    try {
+        Test-Connection -Count 1 $url | Out-Null
+        return $true
+    }
+    catch {
+        Write-Output "$url not available"
+        return $false
+    }
+}
+
+
+$ISME = ($ENV:USERNAME -eq 'liszt')
+$INSTALLED = (Test-Command scoop)
+
+Write-Output "Hello $ENV:USERNAME"
+check
+if ($args[0] -eq "uninstall"){
+    uninstall
+    exit
+}
+install
