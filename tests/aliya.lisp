@@ -1,8 +1,8 @@
-(defpackage aliya/tests/main
+(defpackage aliya/tests/aliya
   (:use :cl
         :aliya
         :rove))
-(in-package :aliya/tests/main)
+(in-package :aliya/tests/aliya)
 
 ;; NOTE: To run this test file, execute `(asdf:test-system :aliya)' in your Lisp.
 
