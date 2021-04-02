@@ -33,12 +33,10 @@ function install() {
         }
     }
 
-    if (!(Test-Path $ENV:ALIYA)){
-        echo "Cloning aliya..."
+    if (!(Test-Path $ENV:ALIYA)) {
+        Write-Output "Cloning aliya..."
         git clone http://github.com/Liszt21/Aliya $ENV:ALIYA
     }
-
-
 }
 
 function uninstall() {
@@ -56,7 +54,6 @@ function Test-Command($command) {
         return $true
     }
     catch {
-        Write-Output "Errorrr"
         return $false
     }
 }
@@ -79,7 +76,7 @@ $INSTALLED = (Test-Command scoop)
 
 Write-Output "Hello $ENV:USERNAME"
 check
-if ($args[0] -eq "uninstall"){
+if ($args[0] -eq "uninstall") {
     uninstall
     exit
 }

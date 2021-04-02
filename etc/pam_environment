@@ -1,0 +1,8 @@
+
+LANG          DEFAULT=zh_CN.UTF-8
+
+GTK_IM_MODULE DEFAULT=fcitx
+QT_IM_MODULE  DEFAULT=fcitx
+XMODIFIERS    DEFAULT=@im=fcitx
+
+LISUX         DEFAULT=@{HOME}/.lisux
