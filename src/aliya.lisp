@@ -1,5 +1,5 @@
 (defpackage aliya
-  (:use :cl :uiop)
+  (:use :cl :uiop :py4cl)
   (:export :hello))
 (in-package :aliya)
 
