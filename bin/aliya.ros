@@ -7,14 +7,23 @@ exec ros -Q -- $0 "$@"
   (ros:ensure-asdf)
   #+quicklisp(ql:quickload '() :silent t))
   
-(defpackage :ros.script.aliya.3825906675
+(defpackage :ros.script.aliya.entry
   (:use :cl))
-(in-package :ros.script.aliya.3825906675)
+(in-package :ros.script.aliya.entry)
 
-(asdf:load-asd #p"/home/liszt/.aliya/aliya.asd")
+
+(ql:quickload :uiop)
+
+(let* ((aliya (or (uiop:getenv "ALIYA") #+os-windows "C:/Liszt/Aliya" #-os-windows "/home/liszt/.aliya"))
+       (mid (position #\: aliya))
+       (device (subseq aliya 0 mid))
+       (directory (if mid (subseq aliya (+ mid 2)) aliya)))
+  (asdf:load-asd (make-pathname :device device :directory directory :name "aliya" :type "asd")))
+
 (ql:quickload :aliya)
 
 (defun main (&rest argv)
   (declare (ignorable argv))
   (aliya:hello))
 ;;; vim: set ft=lisp lisp:
+ 

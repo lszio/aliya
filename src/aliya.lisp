@@ -1,7 +1,7 @@
 (defpackage aliya
-  (:use :cl :uiop :py4cl)
+  (:use :cl :uiop)
   (:export :hello))
 (in-package :aliya)
 
 (defun hello ()
-  (format t "~a ~a" "Hello" (uiop:getenv "USER")))
+  (format t "~a ~a" "Hello" (uiop:getenv #+os-windows "USERNAME" #-os-windows "USER")))
