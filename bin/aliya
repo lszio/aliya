@@ -14,10 +14,17 @@ except ImportError:
 
 class Aliya:
     def __init__(self):
-        self._root = Path(__file__).parent.parent
+        self._root = Path(__file__).parent.parent.absolute()
 
     def update(self):
         os.system("cd $ALIYA &&  git pull --ff-only && cd $OLDPWD")
+
+    def hello(self):
+        self.lisp('(aliya:hello)')
+
+    def lisp(self, form):
+        asd = "/".join(str(self._root / "aliya.asd").split("\\"))
+        os.system("ros -S {} -s aliya -e {}".format(asd, form))
 
 
 if __name__ == "__main__":

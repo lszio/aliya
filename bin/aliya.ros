@@ -14,11 +14,11 @@ exec ros -Q -- $0 "$@"
 
 (ql:quickload :uiop)
 
-(let* ((aliya (or (uiop:getenv "ALIYA") #+os-windows "C:/Liszt/Aliya" #-os-windows "/home/liszt/.aliya"))
-       (mid (position #\: aliya))
-       (device (subseq aliya 0 mid))
-       (directory (if mid (subseq aliya (+ mid 2)) aliya)))
-  (asdf:load-asd (make-pathname :device device :directory directory :name "aliya" :type "asd")))
+(let ((home (or (uiop:getenv "ALIYA")
+                #+os-windows "C:/Liszt/Aliya"
+                #-os-windows "~/.aliya")))
+  (asdf:load-asd (pathname (concatenate 'string
+                                        home "/aliya.asd"))))
 
 (ql:quickload :aliya)
 
