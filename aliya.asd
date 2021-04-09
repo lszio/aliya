@@ -5,8 +5,8 @@
   :depends-on ()
   :components ((:module "src"
                 :components
-                ((:file "aliya"
-                  :file "system"))))
+                ((:file "aliya")
+                 (:file "system"))))
   :description "Liszt's virtual assistant"
   :in-order-to ((test-op (test-op "aliya/tests"))))
 
