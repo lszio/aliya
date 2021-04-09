@@ -10,5 +10,5 @@
            #+os-windows "USERNAME"
            #-os-windows "USER")))
 
-(defun cli ((command "help") &rest rest)
+(defun cli (&optional (command "help") &rest rest)
   (print (format nil "Command: ~A" command)))
