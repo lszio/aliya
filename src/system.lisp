@@ -21,14 +21,16 @@
       (t cl:*features*))))
 
 (defun command-exists (command)
-  (multiple-value-bind (_ _ code)
-      (uiop:run-program
-       (format nil "~A ~A"
-               #+os-windows "powershell -Command Get-Command"
-               #-os-windows "command -v"
-               command)
-       :ignore-error-status t)
-   (eq 0 code)))
+  (let ((code
+          (third
+           (multiple-value-list
+            (uiop:run-program
+             (format nil "~A ~A"
+                     #+os-windows "powershell -Command Get-Command"
+                     #-os-windows "command -v"
+                     command)
+             :ignore-error-status t)))))
+    (eq 0 code)))
 
 (defun detect-features ()
   "Detect features"
