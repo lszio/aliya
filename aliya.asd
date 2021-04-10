@@ -6,7 +6,7 @@
   :components ((:module "src"
                 :components
                 ((:file "aliya")
-                 (:file "system")
+                 (:file "application")
                  (:file "core"))))
   :description "Liszt's virtual assistant"
   :in-order-to ((test-op (test-op "aliya/tests"))))
