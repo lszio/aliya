@@ -8,8 +8,7 @@ exec ros -Q -- $0 "$@"
   #+quicklisp
   (ql:quickload :uiop :silent t)
   (let ((home (or (uiop:getenv "ALIYA")
-                  #+os-windows "C:/Liszt/Aliya"
-                  #-os-windows "~/.aliya")))
+                  "~/Aliya")))
     (asdf:load-asd (pathname
                     (concatenate 'string
                                  home "/aliya.asd"))))

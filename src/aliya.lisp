@@ -12,3 +12,7 @@
 
 (defun cli (&optional (command "help") &rest rest)
   (print (format nil "Command: ~A" command)))
+
+(defun main ())
+
+(main)

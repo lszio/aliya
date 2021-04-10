@@ -1,9 +1,35 @@
 * Aliya 
 
 ** Usage
+#+begin_src shell
+aliya
+#+end_src
 
 ** Features 
 *** System Management
+**** System Initialize
+- Configuration
+- Applications
+  - pyenv
+  - nvm
+  - frp
+  - emacs
+  - roswell
+
+**** Clish
+using common lisp as shell
+
+**** Service
+- frp
+- jupyter
+- samba
+- syncthing
+- personal website
+- linance
+
+**** Scheduler
+- system update
+
 
 ** Installation
 *** Linux

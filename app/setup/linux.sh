@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-ALIYA=${ALIYA:-~/.aliya}
+ALIYA=${ALIYA:-~/Aliya}
 export ALIYA=$ALIYA
 
 function check() {
