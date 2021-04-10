@@ -7,12 +7,12 @@ function check() {
     }
     
     if (!$ENV:SCOOP) {
-        $ENV:SCOOP = If ($ISME) { 'C:\Liszt\Scoop' } Else { "$ENV:HOME\Scoop" }
+        $ENV:SCOOP = "$ENV:HOME\Scoop"
         [environment]::setEnvironmentVariable('SCOOP', $ENV:SCOOP, 'User')
     }
     
     if (!$ENV:ALIYA) {
-        $ENV:ALIYA = If ($ISME) { 'C:\Liszt\Aliya' } Else { "$ENV:HOME\Aliya" }
+        $ENV:ALIYA = "$ENV:HOME\Aliya"
         [environment]::SetEnvironmentVariable("ALIYA", $ENV:ALIYA, "User")
     }
 }
