@@ -59,3 +59,4 @@
   (when (uiop:getenv "WSL_DISTRO_NAME") (toggle-feature :wsl t)))
 
 (detect-features)
+(load-init-script)
