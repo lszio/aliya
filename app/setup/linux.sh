@@ -65,12 +65,12 @@ function prepare() {
 
     [ $PACKAGE_MANAGER == "apt" ] && {
         echo "Using apt"
-        sudo apt-get install git libcurl4-openssl-dev automake -y
+        sudo apt-get install git build-essential libcurl4-openssl-dev automake zlib1g-dev -y
     }
 
     [ $PACKAGE_MANAGER == "yum" ] && {
         echo "Using yum"
-        sudo yum install git automake libcurl-devel -y
+        sudo yum install git automake libcurl-devel zlib-devel -y
     }
 }
 
