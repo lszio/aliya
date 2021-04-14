@@ -4,10 +4,12 @@
   :license ""
   :depends-on ()
   :components ((:module "src"
-                :components
-                ((:file "aliya")
-                 (:file "application")
-                 (:file "core"))))
+                        :components
+                        ((:file "package")
+                         (:file "core" :depends-on ("package"))
+                         (:file "app" :depends-on ("package" "core"))
+                         (:file "aliya" :depends-on ("package" "app")))))
+  :entry-point "aliya:cli"
   :description "Liszt's virtual assistant"
   :in-order-to ((test-op (test-op "aliya/tests"))))
 

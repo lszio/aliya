@@ -1,7 +1,4 @@
-(defpackage :aliya.core
-  (:use :cl :uiop))
-
-(in-package :aliya.core)
+(in-package :aliya)
 
 (defvar *home* (or (uiop:getenv "ALIYA")
                    "~/Aliya"))
@@ -17,11 +14,11 @@
                        (and (not action)
                             action-supplied-p)))))
     (cond
-     (on
-      (setf cl:*features* (cons feature cl:*features*)))
-     (off
-      (setf cl:*features* (remove feature cl:*features*)))
-     (t cl:*features*))))
+      (on
+       (setf cl:*features* (cons feature cl:*features*)))
+      (off
+       (setf cl:*features* (remove feature cl:*features*)))
+      (t cl:*features*))))
 
 (defun command-exists (command)
   (let ((code
@@ -33,7 +30,7 @@
                     #-os-windows "command -v"
                     command)
             :ignore-error-status t)))))
-    (eq 0 code)))
+    (zerop code)))
 
 (defun load-init-script ()
   (cond

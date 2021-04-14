@@ -20,6 +20,5 @@ exec ros -Q -- $0 "$@"
 
 (defun main (&rest argv)
   (declare (ignorable argv))
-  (aliya:cli))
+  (apply #'aliya:cli argv))
 ;;; vim: set ft=lisp lisp:
- 

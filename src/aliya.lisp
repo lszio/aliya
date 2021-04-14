@@ -1,6 +1,3 @@
-(defpackage aliya
-  (:use :cl :uiop)
-  (:export :hello :cli))
 (in-package :aliya)
 
 (defun hello ()
@@ -11,8 +8,16 @@
            #-os-windows "USER")))
 
 (defun cli (&optional (command "help") &rest rest)
-  (print (format nil "Command: ~A" command)))
+  (pprint (format nil "Command: ~A" command))
+  (cond
+    ((equalp command "install") 
+     (let ((app (first rest)))
+        (if (equal app "--list")
+          (maphash #'(lambda (key value) (print key) (pprint value)) *apps*)
+          (install-app app))))))
+
+(defun install-app (name)
+  (print (format nil "Installing ~A" name))
+  (dispatch `(,name) '(install)))
 
 (defun main ())
-
-(main)
