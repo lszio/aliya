@@ -1,0 +1,9 @@
+[credential]
+        helper = manager-core
+[user]
+        name = liszt21
+        email = 1832666492@qq.com
+[alias]
+        lg = log --color --graph --pretty=format:'%C(bold red)%h%C(reset) - %C(bold green)(%cr)%C(bold blue)<%an>%C(reset) -%C(bold yellow)%d%C(reset) %s' --abbrev-commit
+[core]
+        editor = vim

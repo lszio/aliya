@@ -7,3 +7,9 @@ tmp/
 *.egg*
 __pycache__
 build
+dist
+temp
+var
+
+/app/*
+!/app/setup/

@@ -1,0 +1,6 @@
+#|-*- mode:lisp -*-|#
+
+(print "Hello from init file")
+
+
+;;; vim: set ft=lisp lisp:

@@ -1,0 +1,24 @@
+#!/bin/sh
+#|-*- mode:lisp -*-|#
+#|
+exec ros -Q -- $0 "$@"
+|#
+(progn ;;init forms
+  (ros:ensure-asdf)
+  #+quicklisp
+  (ql:quickload :uiop :silent t)
+  (let ((home (or (uiop:getenv "ALIYA")
+                  "~/Aliya")))
+    (asdf:load-asd (pathname
+                    (concatenate 'string
+                                 home "/aliya.asd"))))
+  (ql:quickload :aliya :silent t))
+  
+(defpackage :ros.script.aliya.entry
+  (:use :cl))
+(in-package :ros.script.aliya.entry)
+
+(defun main (&rest argv)
+  (declare (ignorable argv))
+  (apply #'aliya:cli argv))
+;;; vim: set ft=lisp lisp:
