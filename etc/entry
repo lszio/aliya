@@ -29,7 +29,7 @@ export PATH="$ALIYA/bin:$PATH"
 # fi
 
 [ -d "$ALIYA/app/ohmyzsh" ] && [ $ZSH_VERSION ] && {
-    export ZSH="$HOME/.ALIYA/app/ohmyzsh"
+    export ZSH="$ALIYA/app/ohmyzsh"
 
     ZSH_THEME="typewritten"
 
@@ -41,7 +41,7 @@ export PATH="$ALIYA/bin:$PATH"
 
     export TYPEWRITTEN_PROMPT_LAYOUT="multiline"
 
-    source $ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+    source $ZSH/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 }
 
 [ -d "$ALIYA/app/pyenv" ] && {
@@ -53,13 +53,13 @@ export PATH="$ALIYA/bin:$PATH"
 }
 
 [ -d "$ALIYA/app/lemacs" ] && {
-    export LEMACS_HOME="$ALIYA/app/lemacs"
-    export PATH="$LEMACS_HOME/bin:$PATH"
+    export LEMACS="$ALIYA/app/lemacs"
+    export PATH="$LEMACS/bin:$PATH"
 }
 
 [ -d "$ALIYA/app/roswell" ] && {
-    export ROSWELL_HOME="$ALIYA/app/roswell"
-    export PATH="$ROSWELL_HOME/bin:$PATH"
+    export ROSWELL="$ALIYA/app/roswell"
+    export PATH="$ROSWELL/bin:$PATH"
 }
 
 [ -d "$ALIYA/app/nvm" ] && {
