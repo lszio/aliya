@@ -23,7 +23,9 @@
         for app = (gethash (string name) *apps*)
         do (if app
                (loop for action in actions
-                     do (eval (getf app action)))
+                     do (progn
+                          (print (format nil "Eval ~A ~A..." name action))
+                          (eval (getf app action))))
                (print (format nil "App ~A not found..." name)))))
 
 (defun string->path (string)
@@ -73,3 +75,9 @@
             (print "Remove nvm")
             (remove-folder "@/app/nvm"))
   :cover t)
+
+(defun package-manager (action name &key scoop yay apt)
+  (let ((mapper '(:yay (:install "-Ss" :remove "-Rcus")
+                  :scoop (:install "install" :remove "uninstall")
+                  :apt (:install "install" :remove "remove"))))
+       (getf (getf mapper name) action)))

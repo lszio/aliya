@@ -18,6 +18,6 @@
 
 (defun install-app (name)
   (print (format nil "Installing ~A" name))
-  (dispatch `(,name) '(install)))
+  (dispatch `(,name) '(:install)))
 
 (defun main ())
