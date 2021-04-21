@@ -1,0 +1,1 @@
+ros "$ENV:ALIYA/bin/aliya.ros"
