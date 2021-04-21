@@ -19,10 +19,11 @@ class Liray:
         self._subs = []
         self._servers = []
         self._template = {}
-        # self._running = False
+        self._uris = []
         self.expire = expire
-        # self._load_subs()
-        # self._load_servers()
+        # self._running = False
+        self._load_subs()
+        self._load_servers()
         self._load_template()
 
     def sub(self, uri, replace=False):
@@ -69,11 +70,12 @@ class Liray:
         expired = not (cache.exists() and time.time() -
                        cache.stat().st_mtime < self.expire)
         servers = []
+        if len(self._subs) == 0:
+            return servers
         if force or expired:
             for sub in self._subs:
                 logging.info("Request {}".format(sub))
-                r, c = requests.get(sub)
-                logging.info("R: {}, C: {}".format(r, c))
+                r = requests.get(sub)
                 links = base64.b64decode(r.text).decode("ascii").split("\n")
                 supported_protocols = ["vmess"]
                 for link in links:
@@ -87,8 +89,10 @@ class Liray:
                             servers.append(server)
                     except Exception as error:
                         print(error)
-            with open(cache, "w") as f:
-                json.dump(servers, f)
+            if len(servers) > 0:
+                logging.info("Saving {} servers".format(len(servers)))
+                with open(cache, "w") as f:
+                    json.dump(servers, f)
         else:
             logging.info("Loading servers from cache")
             with open(cache, "r") as f:
@@ -148,7 +152,8 @@ class Liray:
             available, delay = self._tcping(server["add"], int(server["port"]))
             if available:
                 logging.info(
-                    "Available server {}, with delay {}".format(server['ps'], delay))
+                    "Available server {}, with delay {}".format(server['ps'],
+                                                                delay))
             server['delay'] = delay
         sorted(self._servers, key=lambda s: s["delay"])
 
