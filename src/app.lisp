@@ -50,8 +50,8 @@
                 (third
                  (multiple-value-list
                   (uiop:run-program (format nil "git clone ~A ~A" repo dest)
-                                    :output *standard-output*
-                                    :error-output *standard-output*
+                                    :output :interactive
+                                    :error-output :interactive
                                     :ignore-error-status t)))))
           (print "Cloning failed")
           (remove-folder path)))))
@@ -81,8 +81,8 @@
                                                  "export ZSH=$ALIYA/app/ohmyzsh"
                                                  "export RUNZSH=no"
                                                  "sh -c \"$(curl -fsSL https://gitee.com/mirrors/oh-my-zsh/raw/master/tools/install.sh)\"")
-                                         :output *standard-output*
-                                         :error-output *standard-output*)
+                                         :output :interactive
+                                         :error-output :interactive)
                        (let ((profile (merge-pathnames ".zshrc" (user-homedir-pathname))))
                          (when (uiop:directory-exists-p profile)
                             (rename-file profile (merge-pathnames ".zshrc.bak" (user-homedir-pathname))))
