@@ -6,6 +6,7 @@
   :components ((:module "src"
                         :components
                         ((:file "package")
+                         (:file "clish")
                          (:file "core" :depends-on ("package"))
                          (:file "app" :depends-on ("package" "core"))
                          (:file "aliya" :depends-on ("package" "app")))))

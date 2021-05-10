@@ -12,11 +12,11 @@ exec ros -Q -- $0 "$@"
                                       (list "." ".." (uiop:getenv "ALIYA") "~/ALiya" "~/.aliya")))))
   (ql:quickload :aliya :silent t))
   
-(defpackage :ros.script.aliya.entry
+(defpackage :ros.script.aliya.clish
   (:use :cl))
-(in-package :ros.script.aliya.entry)
+(in-package :ros.script.aliya.clish)
 
 (defun main (&rest argv)
   (declare (ignorable argv))
-  (apply #'aliya:cli argv))
+  (aliya.clish:repl))
 ;;; vim: set ft=lisp lisp:
