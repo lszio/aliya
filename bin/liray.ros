@@ -65,7 +65,6 @@ exec ros -Q -- $0 "$@"
 (defun load-template (&optional (file (string->path "@/etc/liray/template.json")))
   (if (probe-file file)
       (let ((tmp ""))
-        (format t "Load template")
         (with-open-file (in file)
           (with-standard-io-syntax
             (do ((line (read-line in nil) (read-line in nil)))
@@ -164,34 +163,45 @@ exec ros -Q -- $0 "$@"
 (defun generate-config (&optional (count 6))
   (let ((template (copy-alist *template*)))
     (loop for server in (subseq *servers* 0 count)
-          collect (let* ((users (list (pairlis (list :id :aliteId :security :level)
+          collect (let* ((users (list (pairlis (list :id :alter-id :security :level)
                                                (list (cdr (assoc :id server))
                                                      (cdr (assoc :aid server))
                                                      "auto"
                                                      0))))
-                         (vnext (list (pairlis (list :address :port :users)
-                                              (list (cdr (assoc :add server))
-                                                    (cdr (assoc :port server))
-                                                    users))))
+                         (vnext (list (pairlis (list :users :port :address)
+                                               (list users
+                                                     (cdr (assoc :port server))
+                                                     (cdr (assoc :add server))))))
                          (settings (pairlis (list :vnext :delay)
                                             (list vnext 0)))
-                         (stream (pairlis (list :network :security :tag :ws-settings)
-                                          (list (cdr (assoc :net server))
-                                                (cdr (assoc :type server))
-                                                (cdr (assoc :ps server))
+                         (stream (pairlis (list :mux :kcp-settings :tls-settings :ws-settings :security  :network)
+                                          (list (pairlis '(:enabled :concurrency) (list t 8))
+                                                nil
+                                                nil
                                                 (if (equal (cdr (assoc :net server)) "ws")
-                                                    (pairlis '(:path :host)
+                                                    (pairlis '(:path :headers)
                                                              (list (cdr (assoc :path server))
-                                                                   (cdr (assoc :host server))))
-                                                    nil))))
-                         (outbound (pairlis (list :protocol :settings :stream-settings)
+                                                                   (acons :-host (cdr (assoc :host server)) '())))
+                                                    nil)
+                                                (cdr (assoc :type server))
+                                                (cdr (assoc :net server)))))
+                                                
+                         (outbound (pairlis (list :protocol :stream-settings :settings :tag)
                                             (list (cdr (assoc :p server))
+                                                  stream
                                                   settings
-                                                  stream))))
-                    (pprint outbound)
+                                                  (cdr (assoc :ps server))))))
                     (push outbound (cdr (assoc :outbounds template)))
                     outbound))
     template))
+
+(defun save-config (&optional (config (generate-config))
+                      (file (string->path "@/var/liray/config.json")))
+  (with-open-file (out file :direction :output :if-exists :supersede)
+    (with-standard-io-syntax
+      (when *debug*
+        (format t "Save config to ~A~%" file))
+      (json:encode-json config out))))
 
 (defun main (&rest argv)
   (declare (ignorable argv))
@@ -203,9 +213,7 @@ exec ros -Q -- $0 "$@"
   (subscribe "https://2ray.nl/link/ISSoiwcfXrZLJ6aw?sub=3")
   (load-servers)
   (load-template)
-  (with-open-file (out (string->path "@/var/liray/test.json") :direction :output :if-exists :supersede)
-    (with-standard-io-syntax
-      (json:encode-json-alist (generate-config) out))))
+  (save-config))
   ;; (ping&sort)
 
 ;;; vim: set ft=lisp lisp:
