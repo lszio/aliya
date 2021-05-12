@@ -58,6 +58,7 @@ exec ros -Q -- $0 "$@"
           (setf *subscribes* (list url))
           (format t "Url ~A already subscribed...~%" url))
       (push url *subscribes*))
+  (uiop:ensure-all-directories-exist (list file))
   (with-open-file (out file :direction :output :if-exists :supersede)
     (dolist (url *subscribes*)
       (format out "~A~%" url))))
@@ -140,6 +141,7 @@ exec ros -Q -- $0 "$@"
                 (push (cons :p protocol) data)
                 ;; (push (cons :ping (tcping (cdr (assoc :add data)) (cdr (assoc :port data)))) data)
                 (push data *servers*)))))
+        (uiop:ensure-all-directories-exist (list cache))
         (with-open-file (out cache :direction :output :if-exists :supersede)
           (format t "Cache servers...~%")
           (with-standard-io-syntax
@@ -197,24 +199,36 @@ exec ros -Q -- $0 "$@"
 
 (defun save-config (&optional (config (generate-config))
                       (file (string->path "@/var/liray/config.json")))
+  (uiop:ensure-all-directories-exist (list file))
   (with-open-file (out file :direction :output :if-exists :supersede)
     (with-standard-io-syntax
       (when *debug*
         (format t "Save config to ~A~%" file))
       (json:encode-json config out))))
 
+(defun start (&optional (file (string->path "@/var/liray/config.json")) (output :interactive))
+  (uiop:run-program (format nil "v2ray -config ~A" (namestring file))
+                    :ignore-error-status t
+                    :output output))
+
 (defun main (&rest argv)
   (declare (ignorable argv))
-  (setf *debug* t)
-  (format t "Liray!!!~%")
-  (when *debug*
-    (format t "Debug on...~%"))
-  (load-subscribes)
-  (subscribe "https://2ray.nl/link/ISSoiwcfXrZLJ6aw?sub=3")
-  (load-servers)
-  (load-template)
-  (save-config))
-  ;; (ping&sort)
+  (let ((command (first argv))
+        (debug (position "--debug" argv :test #'equal)))
+    (when debug
+      (setf *debug* t)
+      (format t "Debug on..."))
+    (load-subscribes)
+    (load-template)
+    (cond
+      ((equal command "sub")
+       (subscribe (second argv)))
+      ((equal command "start")
+       (load-servers)
+       (ping&sort)
+       (save-config)
+       (start))
+      (t
+       (format t "Help~%Commands:~%  sub url ~%  start")))))
 
 ;;; vim: set ft=lisp lisp:
-
