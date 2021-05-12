@@ -8,16 +8,18 @@
            #-os-windows "USER")))
 
 (defun cli (&optional (command "help") &rest rest)
-  (pprint (format nil "Command: ~A" command))
   (cond
     ((equalp command "install") 
      (let ((app (first rest)))
         (if (equal app "--list")
           (maphash #'(lambda (key value) (print key) (pprint value)) *apps*)
-          (install-app app))))))
-
-(defun install-app (name)
-  (print (format nil "Installing ~A" name))
-  (dispatch `(,name) '(:install)))
+          (dispatch (list app) '(:install)))))
+    ((equalp command "remove")
+     (let ((app (first rest)))
+       (if (equal app "--list")
+           (pprint nil)
+           (dispatch (list app) '(:remove)))))
+    (t
+     (format t "Help~%Commands:~%  install~%  remove~%"))))
 
 (defun main ())

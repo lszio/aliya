@@ -5,6 +5,7 @@
 (in-package :aliya.clish)
 
 (defparameter *hist* 0)
+(defparameter *cli* '())
 
 (defun promot ()
   (format t "~A:[~D]>~%☰ " (uiop:getenv #+os-windows "USERNAME" #-os-windows "USER") *hist*)
@@ -23,17 +24,21 @@
                (class-name (class-of err)) err))))
 
 (defun repl ()
-  (promot)
-  (loop for - = (read)
-        while (not (position - '((quit) (exit)) :test #'equal))
-        do (handle-errors
-            (setf +++ ++ ++ + + -)
-            (setf /// // // / / (multiple-value-list (eval -)))
-            (setf *** ** ** * * (first /))
-            (format t "~& --> ~{~S~^ ;~%     ~}~%" /)
-            (promot))))
-
-(defun read-shell-script (stream))
+  (do ()
+      (nil)
+    (promot)
+    (setf +++ ++ ++ + + - - (read))
+    (when (position - '((quit) (exit)) :test #'equal)
+      (format t "Exit...")
+      (return-from repl))
+    (setf /// // // / / (multiple-value-list (eval -)))
+    (setf *** ** ** * * (first /))
+    (format t "~& --> ~{~S~^ ;~%     ~}~%" /)))
+    
+(defun read-shell-script (stream)
+  (loop for c = (read-char)
+        while (not (char= c #\NewLine))
+        collect c))
 
 (defun shell-mode (stream char)
   (let ((script (read-line stream)));; FIXME need double #\NewLine
@@ -43,3 +48,6 @@
 
 (defun main ()
   (repl))
+  
+
+         

@@ -56,60 +56,54 @@
           (print "Cloning failed")
           (remove-folder path)))))
 
-(defapp pyenv :install '(progn
-                         (print "Install pyenv")
-                         (git-clone "https://github.com/pyenv/pyenv" "@/app/pyenv"))
-              :update '(print "Update pyenv")
-              :remove '(progn
-                        (print "Remove pyenv")
-                        (remove-folder "@/app/pyenv"))
-              :cover t)
+(defapp pyenv
+  :install '(progn
+             (print "Install pyenv")
+             (git-clone "https://github.com/pyenv/pyenv" "@/app/pyenv"))
+  :update '(print "Update pyenv")
+  :remove '(progn (print "Remove pyenv") (remove-folder "@/app/pyenv"))
+  :cover t)
 
-(defapp nvm :install '(progn
-                       (print "Install nvm")
-                       (git-clone "https://gitee.com/mirrors/nvm.git" "@/app/nvm"))
+(defapp nvm
+  :install '(progn
+             (print "Install nvm")
+             (git-clone "https://gitee.com/mirrors/nvm.git" "@/app/nvm"))
   :update '(print "Update nvm")
-  :remove '(progn
-            (print "Remove nvm")
-            (remove-folder "@/app/nvm"))
+  :remove '(progn (print "Remove nvm") (remove-folder "@/app/nvm"))
   :cover t)
 
 ;; #-os-windows
-(defapp ohmyzsh :install '(progn
-                       (print "Install ohmyzsh")
-                       (uiop:run-program (format nil "~A;~A;~A"
-                                                 "export ZSH=$ALIYA/app/ohmyzsh"
-                                                 "export RUNZSH=no"
-                                                 "sh -c \"$(curl -fsSL https://gitee.com/mirrors/oh-my-zsh/raw/master/tools/install.sh)\"")
-                                         :output :interactive
-                                         :error-output :interactive)
-                       (let ((profile (merge-pathnames ".zshrc" (user-homedir-pathname))))
-                         (when (uiop:directory-exists-p profile)
-                            (rename-file profile (merge-pathnames ".zshrc.bak" (user-homedir-pathname))))
-                         (with-open-file (out profile :direction :output :if-exists :supersede)
-                          (with-standard-io-syntax
-                            ;; TODO Optimise
-                            (princ (format nil "source ~A" (concatenate 'string *home* "/etc/entry")) out)
-                            )))
-                       (git-clone "https://github.com/reobin/typewritten.git" "@/app/ohmyzsh/themes/typewritten")
-                       (uiop:run-program (format nil "ln -s ~A ~A" (concatenate 'string
-                                                                                *home*
-                                                                                "/app/ohmyzsh/themes/typewritten/typewritten.zsh-theme")
-                                                                   (concatenate 'string
-                                                                                *home*
-                                                                                "/app/ohmyzsh/themes/typewritten.zsh-theme")))
-                       (git-clone "https://github.com/zsh-users/zsh-autosuggestions" "@/app/ohmyzsh/plugins/zsh-autosuggestions")
-                       (git-clone "https://github.com/zsh-users/zsh-syntax-highlighting" "@/app/ohmyzsh/plugins/zsh-syntax-highlighting")
-                        )
+(defapp ohmyzsh
+  :install '(progn
+             (print "Install ohmyzsh")
+             (uiop:run-program (format nil "~A;~A;~A"
+                                       "export ZSH=$ALIYA/app/ohmyzsh"
+                                       "export RUNZSH=no"
+                                       "sh -c \"$(curl -fsSL https://gitee.com/mirrors/oh-my-zsh/raw/master/tools/install.sh)\"")
+                               :output :interactive
+                               :error-output :interactive)
+             (let ((profile (merge-pathnames ".zshrc" (user-homedir-pathname))))
+               (when (uiop:directory-exists-p profile)
+                  (rename-file profile (merge-pathnames ".zshrc.bak" (user-homedir-pathname))))
+               (with-open-file (out profile :direction :output :if-exists :supersede)
+                (with-standard-io-syntax ;; TODO Optimise
+                  (princ (format nil "source ~A" (concatenate 'string *home* "/etc/entry")) out))))
+             (git-clone "https://github.com/reobin/typewritten.git" "@/app/ohmyzsh/themes/typewritten")
+             (uiop:run-program (format nil "ln -s ~A ~A"
+                                (concatenate 'string *home*
+                                             "/app/ohmyzsh/themes/typewritten/typewritten.zsh-theme")
+                                (concatenate 'string *home*
+                                             "/app/ohmyzsh/themes/typewritten.zsh-theme")))
+             (git-clone "https://github.com/zsh-users/zsh-autosuggestions" "@/app/ohmyzsh/plugins/zsh-autosuggestions")
+             (git-clone "https://github.com/zsh-users/zsh-syntax-highlighting" "@/app/ohmyzsh/plugins/zsh-syntax-highlighting"))
   :update '(print "Update ohmyzsh")
-  :remove '(progn
-            (print "Remove ohmyzsh")
-            (remove-folder "@/app/ohmyzsh"))
+  :remove '(progn (print "Remove ohmyzsh") (remove-folder "@/app/ohmyzsh"))
   :cover t)
 
-(defapp lemacs :install '(progn
-                       (print "Install lemacs")
-                       (git-clone "https://github.com/Liszt21/Lemacs" "@/app/lemacs"))
+(defapp lemacs
+  :install '(progn
+             (print "Install lemacs")
+             (git-clone "https://github.com/Liszt21/Lemacs" "@/app/lemacs"))
   :update '(print "Update lemacs")
   :remove '(progn
             (print "Remove lemacs")

@@ -12,9 +12,9 @@ exec ros -Q -- $0 "$@"
                                       (list "." ".." (uiop:getenv "ALIYA") "~/ALiya" "~/.aliya")))))
   (ql:quickload :aliya :silent t))
   
-(defpackage :ros.script.aliya.clish
-  (:use :cl))
-(in-package :ros.script.aliya.clish)
+;; (defpackage :ros.script.aliya.clish
+;;   (:use :cl))
+;; (in-package :ros.script.aliya.clish)
 
 (defun main (&rest argv)
   (declare (ignorable argv))
