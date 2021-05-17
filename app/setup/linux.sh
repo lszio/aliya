@@ -65,12 +65,12 @@ function prepare() {
 
     [ $PACKAGE_MANAGER == "apt" ] && {
         echo "Using apt"
-        sudo apt-get install git build-essential libcurl4-openssl-dev automake zlib1g-dev -y
+        sudo apt-get install git gcc build-essential libcurl4-openssl-dev automake zlib1g-dev -y
     }
 
     [ $PACKAGE_MANAGER == "yum" ] && {
         echo "Using yum"
-        sudo yum install git automake libcurl-devel zlib-devel -y
+        sudo yum install git gcc autoconf libtool make automake libcurl-devel zlib-devel -y
     }
 }
 
@@ -97,7 +97,7 @@ function install() {
     ./configure --prefix=$ROSWELL_HOME
     make
     make install
-    PATH=$ROSWELL_HOME/bin:$PATH ros setup
+    # PATH=$ROSWELL_HOME/bin:$PATH ros setup
     cd $OLDPWD
 }
 
