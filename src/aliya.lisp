@@ -7,17 +7,23 @@
            #+os-windows "USERNAME"
            #-os-windows "USER")))
 
-(defun install-app (app)
-  (dispatch (list app) '(:install)))
+(defun install-app (apps &key (list nil) (source nil))
+  (when list
+      (maphash #'(lambda (key value)
+                   (print key)
+                   (when source (pprint value))) *apps*)
+      (return-from install-app))
+  (dispatch apps '(:install)))
 
-(defun remove-app (app)
-  (dispatch (list app) '(:remove)))
+(defun remove-app (apps)
+  (dispatch apps '(:remove)))
 
 (defun cli (&rest args)
   (aliya.clish:provide-cli
-   (pairlis (list "install" "remove")
-            (list #'install-app #'remove-app))
+   (pairlis (list "remove" "install")
+            (list #'remove-app #'install-app))
    args))
 
 
 (defun main ())
+

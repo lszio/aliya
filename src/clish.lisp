@@ -47,18 +47,43 @@
 
 (defun main ()
   (repl))
-  
+
 (defun parse-params (params)
-  (mapcar (lambda (param) (if (position #\- param)
-                            (intern (string-upcase (string-left-trim '(#\- ) param)) :keyword)
-                            param))
-          params))
-         
-(parse-params (list "aa" "-aa" "--aaa"))
+  (let ((keys '())
+        (cmds '())
+        (list
+          (mapcar (lambda (param)
+                    (if (position #\- param)
+                      (intern (string-upcase (string-left-trim '(#\- ) param)) :keyword)
+                      param))
+                  params)))
+    (dolist (item list)
+      (if (keywordp item)
+          (progn
+            (if (keywordp (car keys))
+                (push t keys))
+            (push item keys))
+          (progn
+            (if (keywordp (car keys))
+                (push item keys)
+                (push item cmds)))))
+    (when (keywordp (car keys))
+      (push t keys))
+    (setf keys (reverse keys))
+    (push cmds keys)))
+      
+(defun split-string (string &optional (separator #\Space))
+  "Return a list from a string splited at each separators"
+  (loop for i = 0 then (1+ j)
+        as j = (position separator string :start i)
+        as sub = (subseq string i j)
+        unless (string= sub "") collect sub
+        while j))
 
 (defun function-helper (fn)
-  (let ((params (second (function-lambda-expression fn))))
-    (pprint params)))
+  (let ((stream (make-string-output-stream)))
+    (describe fn stream)
+    (car (member "Lambda-list:" (split-string (get-output-stream-string stream) #\NewLine) :test #'search))))
 
 (defun provide-cli (command-alist argument-list &optional (name "aliya"))
   (let* ((command (first argument-list))
@@ -67,12 +92,13 @@
     (when (or (equal command "help") (member :help args) (not fn))
       (let ((target (if (equal command "help") (first args) command)))
         (if (member target command-alist :test #'equal :key #'car)
-          (function-helper fn)
+          (format t "~A ~A" target (function-helper fn))
           (progn
             (format t "Help for ~A~%  Commands: ~%" name)
             (dolist (item command-alist)
-              (format t "    ~A" (car item))
-              (function-helper (cdr item))
-              (format t "~%")))))
+              (format t "    ~A ~A~%" (car item) (function-helper (cdr item)))))))
       (return-from provide-cli))
+    (pprint args)
     (apply fn args)))
+
+
