@@ -209,7 +209,8 @@ exec ros -Q -- $0 "$@"
 (defun start (&optional (file (string->path "@/var/liray/config.json")) (output :interactive))
   (uiop:run-program (format nil "v2ray -config ~A" (namestring file))
                     :ignore-error-status t
-                    :output output))
+                    :output output
+                    :force-shell nil))
 
 (defun main (&rest argv)
   (declare (ignorable argv))
