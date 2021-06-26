@@ -60,6 +60,12 @@ function prepare() {
         # command_exists reflector && {
         #     reflector --verbose --country China --sort rate --save /etc/pacman.d/mirrorlist
         # }
+        text-in-file "archlinuxcn" /etc/pacman.conf || {
+            echo "  - add archlinuxcn server"
+            printf "[archlinuxcn]\nServer = https://mirrors.163.com/archlinux-cn/\$arch" | sudo tee -a /etc/pacman.conf
+            sudo pacman -Sy
+            sudo pacman -S archlinuxcn-keyring --noconfirm
+        }
         sudo pacman -S git wget base-devel --needed --noconfirm
     }
 
