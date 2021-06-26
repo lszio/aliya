@@ -1,8 +1,3 @@
-#!/bin/sh
-#|-*- mode:lisp -*-|#
-#|
-exec ros -Q -- $0 "$@"
-|#
 (progn ;;init forms
   (ros:ensure-asdf)
   #+quicklisp(ql:quickload '("dexador" "uiop" "cl-json") :silent t))
