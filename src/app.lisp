@@ -3,23 +3,23 @@
 (defvar *home* (or (uiop:getenv "ALIYA")
                    "~/Aliya"))
 
-(defparameter *apps* (make-hash-table :test #'equalp))
+(defparameter *actions* (make-hash-table :test #'equalp))
 
-(defmacro defapp (name &key install remove start stop update cover)
+(defmacro defaction (name &key install remove start stop update cover)
   (let ((key (string-downcase (string name))))
     (print (format nil "Registering app ~A" key))
-    (if (and (not cover) (gethash key *apps*))
+    (if (and (not cover) (gethash key *actions*))
       (print (format nil "App ~A already exists" key))
-      `(setf (gethash ,key *apps*)
+      `(setf (gethash ,key *actions*)
              (list :install ,install
                    :remove ,remove
                    :update ,update
                    :start ,start
                    :stop ,stop)))))
 
-(defun dispatch (apps actions)
-  (loop for name in apps
-        for app = (gethash (string name) *apps*)
+(defun dispatch (names actions)
+  (loop for name in names
+        for app = (gethash (string name) *actions*)
         do (if app
                (loop for action in actions
                      do (progn
@@ -56,7 +56,7 @@
           (print "Cloning failed")
           (remove-folder path)))))
 
-(defapp pyenv
+(defaction pyenv
   :install '(progn
              (print "Install pyenv")
              (git-clone "https://github.com/pyenv/pyenv" "@/app/pyenv"))
@@ -64,7 +64,7 @@
   :remove '(progn (print "Remove pyenv") (remove-folder "@/app/pyenv"))
   :cover t)
 
-(defapp nvm
+(defaction nvm
   :install '(progn
              (print "Install nvm")
              (git-clone "https://gitee.com/mirrors/nvm.git" "@/app/nvm"))
@@ -73,7 +73,7 @@
   :cover t)
 
 ;; #-os-windows
-(defapp ohmyzsh
+(defaction ohmyzsh
   :install '(progn
              (print "Install ohmyzsh")
              (uiop:run-program (format nil "~A;~A;~A"
@@ -100,7 +100,7 @@
   :remove '(progn (print "Remove ohmyzsh") (remove-folder "@/app/ohmyzsh"))
   :cover t)
 
-(defapp lemacs
+(defaction lemacs
   :install '(progn
              (print "Install lemacs")
              (git-clone "https://github.com/Liszt21/Lemacs" "@/app/lemacs"))

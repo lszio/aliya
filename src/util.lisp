@@ -18,3 +18,15 @@
         as sub = (subseq string i j)
         unless (string= sub "") collect sub
         while j))
+
+(defun shell (&rest cmds)
+  (let ((command (join-list ";" cmds)))
+    (third
+     (multiple-value-list
+      (uiop:run-program
+       (format nil "~A~A"
+               #+os-windows "powershell $OLDPWD=pwd;"
+               #-os-windows ""
+               command)
+       :output :interactive
+       :error-output :interactive)))))
