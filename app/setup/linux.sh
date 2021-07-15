@@ -47,23 +47,24 @@ function main() {
         uninstall
         exit
     }
-    prepare
+    pre-install
     install
-    finish
+    post-install
 }
 
-function prepare() {
+function pre-install() {
+    echo "pre instal"
     [ $PACKAGE_MANAGER == "pacman" ] && {
         echo "Using pacman"
-        # MIRROR=`cat /etc/pacman.d/mirrorlist | grep -e "^Server" | awk '{print $3}'`
-        # echo "$MIRROR"
-        # command_exists reflector && {
-        #     reflector --verbose --country China --sort rate --save /etc/pacman.d/mirrorlist
-        # }
+        MIRROR=`cat /etc/pacman.d/mirrorlist | grep -e "^Server" | awk '{print $3}'`
+        command_exists reflector && {
+            echo "update mirrorlist"
+            reflector --verbose --country China --sort rate --save /etc/pacman.d/mirrorlist
+        }
         text-in-file "archlinuxcn" /etc/pacman.conf || {
             echo "  - add archlinuxcn server"
             printf "[archlinuxcn]\nServer = https://mirrors.163.com/archlinux-cn/\$arch" | sudo tee -a /etc/pacman.conf
-            sudo pacman -Sy
+            sudo pacman -Syy
             sudo pacman -S archlinuxcn-keyring --noconfirm
         }
         sudo pacman -S git wget base-devel --needed --noconfirm
@@ -79,6 +80,7 @@ function prepare() {
         sudo yum install git gcc autoconf libtool make automake libcurl-devel zlib-devel -y
     }
 }
+
 
 function install() {
     [ ! -d "$ALIYA" ] && {
@@ -107,10 +109,11 @@ function install() {
     cd $OLDPWD
 }
 
-function finish() {
-    text-in-file "etc/entry" "$RC_FILE" || {
-        echo "Write entry to $RC_FILE"
-        echo "source $ALIYA/etc/entry" >> "$RC_FILE"
+function post-install() {
+    echo "post install"
+    text-in-file "etc/profile" "$RC_FILE" || {
+        echo "Write profile to $RC_FILE"
+        echo "source $ALIYA/etc/profile" >> "$RC_FILE"
     }
 }
 
@@ -120,9 +123,9 @@ function uninstall() {
         rm -rf "$ALIYA"
     }
 
-    text-in-file "etc/entry" "$RC_FILE" && {
-        echo "Removing entry from $RC_FILE"
-        sed -i "/entry/d" "$RC_FILE"
+    text-in-file "etc/profile" "$RC_FILE" && {
+        echo "Removing profile from $RC_FILE"
+        sed -i "/profile/d" "$RC_FILE"
     }
 }
 
