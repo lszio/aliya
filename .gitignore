@@ -11,5 +11,4 @@ dist
 temp
 var
 
-/app/*
-!/app/setup/
+app
