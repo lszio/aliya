@@ -1,52 +1,4 @@
-(defpackage :aliya.clish
-  (:use :cl :uiop)
-  (:export :repl :provide-cli))
-
-(in-package :aliya.clish)
-
-(defparameter *hist* 0)
-
-(defun promot ()
-  (format t "~A:[~D]>~%☰ " (uiop:getenv #+os-windows "USERNAME" #-os-windows "USER") *hist*)
-  (setf *hist* (1+ *hist*)))
-
-(defmacro handle-errors (&body body)
-  `(handler-case (progn ,@body)
-     (simple-condition (err)
-       (format *error-output* "~&~A: ~%" (class-name (class-of err)))
-       (apply (function format) *error-output*
-              (simple-condition-format-control   err)
-              (simple-condition-format-arguments err))
-       (format *error-output* "~&"))
-     (condition (err)
-        (format *error-output* "~&~A: ~%  ~S~%"
-               (class-name (class-of err)) err))))
-
-(defun repl ()
-  (do ()
-      (nil)
-    (promot)
-    (setf +++ ++ ++ + + - - (read))
-    (when (position - '((quit) (exit)) :test #'equal)
-      (format t "Exit...")
-      (return-from repl))
-    (setf /// // // / / (multiple-value-list (eval -)))
-    (setf *** ** ** * * (first /))
-    (format t "~& --> ~{~S~^ ;~%     ~}~%" /)))
-    
-(defun read-shell-script (stream)
-  (loop for c = (read-char)
-        while (not (char= c #\NewLine))
-        collect c))
-
-(defun shell-mode (stream char)
-  (let ((script (read-line stream)));; FIXME need double #\NewLine
-    (uiop:run-program script :ignore-error-status t :output :interactive)))
-
-(set-macro-character #\! #'shell-mode)
-
-(defun main ()
-  (repl))
+(in-package :aliya)
 
 (defun parse-params (params)
   (let ((keys '())
@@ -71,8 +23,8 @@
       (push t keys))
     (setf keys (reverse keys))
     (push cmds keys)))
-      
-(defun split-string (string &optional (separator #\Space))
+
+(defun split (string &optional (separator #\Space))
   "Return a list from a string splited at each separators"
   (loop for i = 0 then (1+ j)
         as j = (position separator string :start i)
@@ -83,7 +35,7 @@
 (defun function-helper (fn)
   (let ((stream (make-string-output-stream)))
     (describe fn stream)
-    (car (member "Lambda-list:" (split-string (get-output-stream-string stream) #\NewLine) :test #'search))))
+    (car (member "Lambda-list:" (split (get-output-stream-string stream) #\NewLine) :test #'search))))
 
 (defun provide-cli (command-alist argument-list &optional (name "aliya"))
   (let* ((command (first argument-list))
@@ -100,5 +52,3 @@
       (return-from provide-cli))
     (pprint args)
     (apply fn args)))
-
-

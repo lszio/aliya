@@ -1,9 +1,6 @@
-(defpackage aliya.util
-  (:use :cl))
+(in-package :aliya)
 
-(in-package :aliya.util)
-
-(defun join-list (str list)
+(defun join (str list)
   (if (null list)
       ""
     (let ((result (first list)))
@@ -11,7 +8,7 @@
         (setf result (concatenate 'string result str item)))
       result)))
 
-(defun split-string (string &optional (separator #\Space))
+(defun split (string &optional (separator #\Space))
   "Return a list from a string splited at each separators"
   (loop for i = 0 then (1+ j)
         as j = (position separator string :start i)
