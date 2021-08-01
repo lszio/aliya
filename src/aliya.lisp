@@ -19,7 +19,7 @@
   (dispatch apps '(:remove)))
 
 (defun cli (&rest args)
-  (aliya.clish:provide-cli
+  (provide-cli
    (pairlis (list "remove" "install")
             (list #'remove-app #'install-app))
    args))
