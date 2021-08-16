@@ -1,11 +1,15 @@
-(defpackage aliya/tests/aliya
-  (:use :cl
-        :aliya
-        :rove))
-(in-package :aliya/tests/aliya)
+(defpackage aliya/tests
+  (:use
+   :cl
+   :aliya
+   :fiveam))
 
-;; NOTE: To run this test file, execute `(asdf:test-system :aliya)' in your Lisp.
+(in-package :aliya/tests)
 
-(deftest test-target-1
-  (testing "should (= 1 1) to be true"
-    (ok (= 1 1))))
+(def-suite :aliya)
+
+(in-suite :aliya)
+
+(test test-5am
+  (is (equal 1 1))
+  (is (not (equal 2 1))))

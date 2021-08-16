@@ -16,20 +16,8 @@ export PATH="$ALIYA/bin:$PATH"
     export PATH="$ROSWELL_HOME/bin:$PATH"
 }
 
-# if [ $WIN_HOST ];then
-#     export http_proxy=http://$WIN_HOST:1081
-#     export https_proxy=http://$WIN_HOST:1081
-#     git config --global http.proxy $WIN_HOST:1081
-#     git config --global https.proxy $WIN_HOST:1081
-# else
-#     export http_proxy=http://localhost:1081
-#     export https_proxy=http://localhost:1081
-#     git config --global http.proxy localhost:1081
-#     git config --global https.proxy localhost:1081
-# fi
-
 [ -d "$ALIYA/app/ohmyzsh" ] && [ $ZSH_VERSION ] && {
-    export ZSH="$HOME/.ALIYA/app/ohmyzsh"
+    export ZSH="$ALIYA/app/ohmyzsh"
 
     ZSH_THEME="typewritten"
 
@@ -41,29 +29,50 @@ export PATH="$ALIYA/bin:$PATH"
 
     export TYPEWRITTEN_PROMPT_LAYOUT="multiline"
 
-    source $ZSH_CUSTOM/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+    source $ZSH/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 }
 
 [ -d "$ALIYA/app/pyenv" ] && {
     export PYENV_ROOT="$ALIYA/app/pyenv" 
     export PATH="$PYENV_ROOT/bin:$PATH" 
     if command -v pyenv 1>/dev/null 2>&1; then
+        eval "$(pyenv init --path)"
         eval "$(pyenv init -)"
     fi
 }
 
 [ -d "$ALIYA/app/lemacs" ] && {
-    export LEMACS_HOME="$ALIYA/app/lemacs"
-    export PATH="$LEMACS_HOME/bin:$PATH"
+    export LEMACS="$ALIYA/app/lemacs"
+    export PATH="$LEMACS/bin:$PATH"
 }
 
 [ -d "$ALIYA/app/roswell" ] && {
-    export ROSWELL_HOME="$ALIYA/app/roswell"
-    export PATH="$ROSWELL_HOME/bin:$PATH"
+    export ROSWELL="$ALIYA/app/roswell"
+    export PATH="$ROSWELL/bin:$PATH"
 }
 
 [ -d "$ALIYA/app/nvm" ] && {
     export NVM_DIR="$ALIYA/app/nvm"
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
     [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+}
+
+function proxy-on() {
+    if [ $WIN_HOST ] ;then
+        PROXY="http://$WIN_HOST:1081"
+    else
+        PROXY="http://localhost:1081"
+    fi
+
+    export http_proxy=$PROXY
+    export https_proxy=$PROXY
+    git config --global http.proy $PROXY
+    git config --global https.proxy $PROXY
+}
+
+function proxy-off() {
+    unset http_proxy
+    unset https_proxy
+    git config --global --unset http.proy
+    git config --global --unset https.proxy
 }

@@ -7,11 +7,9 @@ exec ros -Q -- $0 "$@"
   (ros:ensure-asdf)
   #+quicklisp
   (ql:quickload :uiop :silent t)
-  (let ((home (or (uiop:getenv "ALIYA")
-                  "~/Aliya")))
-    (asdf:load-asd (pathname
-                    (concatenate 'string
-                                 home "/aliya.asd"))))
+  (asdf:load-asd (eval `(or ,@(mapcar (lambda (folder)
+                                        (probe-file (concatenate 'string folder "/aliya.asd")))
+                                      (list "." ".." (uiop:getenv "ALIYA") "~/ALiya" "~/.aliya")))))
   (ql:quickload :aliya :silent t))
   
 (defpackage :ros.script.aliya.entry
