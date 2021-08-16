@@ -87,7 +87,7 @@
                   (rename-file profile (merge-pathnames ".zshrc.bak" (user-homedir-pathname))))
                (with-open-file (out profile :direction :output :if-exists :supersede)
                 (with-standard-io-syntax ;; TODO Optimise
-                  (princ (format nil "source ~A" (concatenate 'string *home* "/etc/entry")) out))))
+                  (princ (format nil "source ~A" (concatenate 'string *home* "/etc/profile")) out))))
              (git-clone "https://github.com/reobin/typewritten.git" "@/app/ohmyzsh/themes/typewritten")
              (uiop:run-program (format nil "ln -s ~A ~A"
                                 (concatenate 'string *home*
