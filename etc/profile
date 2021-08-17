@@ -66,13 +66,13 @@ function proxy-on() {
 
     export http_proxy=$PROXY
     export https_proxy=$PROXY
-    git config --global http.proy $PROXY
+    git config --global http.proxy $PROXY
     git config --global https.proxy $PROXY
 }
 
 function proxy-off() {
     unset http_proxy
     unset https_proxy
-    git config --global --unset http.proy
+    git config --global --unset http.proxy
     git config --global --unset https.proxy
 }
