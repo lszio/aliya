@@ -45,7 +45,7 @@ export PATH="$ALIYA/bin:$PATH"
     [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 }
 
-function proxy-on() {
+function proxyon() {
     if [ $WIN_HOST ] ;then
         PROXY="http://$WIN_HOST:1081"
     else
@@ -58,7 +58,7 @@ function proxy-on() {
     git config --global https.proxy $PROXY
 }
 
-function proxy-off() {
+function proxyoff() {
     unset http_proxy
     unset https_proxy
     git config --global --unset http.proxy
