@@ -33,6 +33,7 @@ function install() {
         }
     }
 
+
     if (!(Test-Path $ENV:ALIYA)) {
         Write-Output "Cloning aliya..."
         git clone http://github.com/Liszt21/Aliya $ENV:ALIYA
@@ -55,6 +56,25 @@ function Test-Command($command) {
     }
     catch {
         return $false
+    }
+}
+
+function Set-Profile() {
+    try {
+        $content = Get-Content $profile
+        if ($content -match "\. .*\\etc\\profile.ps1") {
+            Write-Output "profile already included"
+        }
+        else {
+            $content = "$content`n. $env:aliya\etc\profile.ps1"
+        }
+    }
+    catch {
+        $content = ". " + $profile
+    }
+    finally {
+        Write-Output "Write '$content' to $profile "
+        Set-Content $profile $content
     }
 }
 
