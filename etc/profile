@@ -47,9 +47,9 @@ export PATH="$ALIYA/bin:$PATH"
 
 function proxyon() {
     if [ $WIN_HOST ] ;then
-        PROXY="http://$WIN_HOST:1081"
+        PROXY="http://$WIN_HOST:1080"
     else
-        PROXY="http://localhost:1081"
+        PROXY="http://localhost:1080"
     fi
 
     export http_proxy=$PROXY
