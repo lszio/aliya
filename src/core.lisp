@@ -38,7 +38,7 @@
     (load "~/.aliya.d/init.lisp"))
    ((uiop:file-exists-p (parse-namestring "~/.aliya"))
     (load "~/.aliya"))
-   (t (load (concatenate 'string *home* "/" "etc" "/" "aliya")))))
+   (t (format t ".aliya not exists~%"))))
 
 
 (defun detect-features ()

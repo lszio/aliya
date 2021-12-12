@@ -8,7 +8,6 @@
                         :components
                         ((:file "package")
                          (:file "util")
-                         (:file "clish")
                          (:file "core")
                          (:file "app")
                          (:file "aliya"))))
