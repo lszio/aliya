@@ -1,5 +1,0 @@
-fire
-wakatime
-requests
-jupyterlab
-

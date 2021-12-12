@@ -11,7 +11,7 @@ exec ros -Q -- $0 "$@"
                                         (probe-file (concatenate 'string folder "/aliya.asd")))
                                       (list "." ".." (uiop:getenv "ALIYA") "~/ALiya" "~/.aliya")))))
   (ql:quickload :aliya :silent t))
-  
+
 (defpackage :ros.script.aliya.entry
   (:use :cl))
 (in-package :ros.script.aliya.entry)

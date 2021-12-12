@@ -22,17 +22,19 @@ function install() {
     if (!$INSTALLED) {
         Invoke-Expression (new-object net.webclient).downloadstring('https://get.scoop.sh')
         scoop update
-        scoop install git sudo ln lxrunoffline fd ripgrep curl make
+        scoop install git sudo ln 
         scoop bucket add extras
         scoop bucket add java  
         scoop bucket add nerd-fonts  
-        if ($ISME) {
-            scoop install v2ray v2rayn emacs atom vim vscode yarn pyenv nvm roswell julia openjdk
-            scoop install googlechrome firefox sumatrapdf potplayer vcxsrv snipaste
-            scoop install firecode sarasagothic-sc 
-        }
+        
     }
 
+    scoop lxrunoffline fd ripgrep curl make gcc
+    if ($ISME) {
+        scoop install v2ray v2rayn emacs atom vim vscode yarn pyenv nvm roswell julia openjdk
+        scoop install googlechrome firefox sumatrapdf potplayer vcxsrv snipaste
+        sudo scoop install sarasagothic-sc FiraCode SourceCodePro-NF
+    }
 
     if (!(Test-Path $ENV:ALIYA)) {
         Write-Output "Cloning aliya..."
