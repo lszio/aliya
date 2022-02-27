@@ -1,0 +1,19 @@
+* Universal Scripting Tools
+
+** Usage
+#+begin_src shell
+  ust
+  ust include
+  ust info
+  ust install
+  ust remove
+#+end_src
+
+** Installation
+#+begin_src shell
+  # via roswell
+  ros install Liszt21/Ust
+  ros install ust
+  # update
+  ros update ust
+#+end_src
