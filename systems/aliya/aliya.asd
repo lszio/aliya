@@ -1,5 +1,5 @@
 (defun detect-asd-files ()
-    (directory #p"./systems/**/*.asd"))
+    (directory #p"../systems/**/*.asd"))
 
 (defun load-asd-files (files)
     (loop for file in files
@@ -15,11 +15,7 @@
   :serial t
   :components ((:module "src"
                         :components
-                        ((:file "package")
-                         (:file "util")
-                         (:file "core")
-                         (:file "app")
-                         (:file "aliya"))))
+                        ((:file "main"))))
   :entry-point "aliya:cli"
   :description "Liszt's virtual assistant"
   :in-order-to ((test-op (test-op "aliya/tests"))))
@@ -31,6 +27,6 @@
                "fiveam")
   :components ((:module "tests"
                 :components
-                ((:file "aliya"))))
+                ((:file "main"))))
   :description "Test system for aliya"
   :perform (test-op (op c) (symbol-call :fiveam :run! :aliya)))
