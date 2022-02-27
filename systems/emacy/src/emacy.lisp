@@ -192,6 +192,6 @@
   (info #'info-profile)
   (list #'list-profiles)
   (remove #'remove-profile)
-  (:pre (lambda (&rest argv) (declare (ignorable argv)) (check))))
+  (:before (lambda (&rest argv) (declare (ignorable argv)) (check))))
 
 ;;; vim: set ft=lisp lisp:
