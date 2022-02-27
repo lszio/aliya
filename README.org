@@ -1,46 +1,8 @@
 * Aliya 
+my lisp world
 
-** Usage
-#+begin_src shell
-aliya
-#+end_src
-
-** Features 
-*** System Management
-**** System Initialize
-- Configuration
-- Applications
-  - pyenv
-  - nvm
-  - frp
-  - emacs
-  - roswell
-
-**** Service
-- frp
-- jupyter
-- samba
-- syncthing
-- personal website
-- linance
-
-**** Scheduler
-- system update
-
-
-** Installation
-*** Linux
-#+begin_src shell
-curl -L https://raw.githubusercontent.com/Liszt21/Aliya/master/utils/setup/linux.sh | bash
-#+end_src
-
-#+RESULTS:
-
-*** Windows
-#+begin_src powershell
-iwr -useb  https://raw.githubusercontent.com/Liszt21/Aliya/master/utils/setup/windows.ps1 | iex
-#+end_src
-
+** systems
+- likit
 
 ** Author
 
