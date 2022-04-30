@@ -14,13 +14,27 @@
    string))
 
 (defmacro start-with-p (string prefix &rest prefixs)
-  `(or (str:starts-with? ,prefix ,string) ,@(loop for pre in prefixs collect `(str:starts-with? ,pre ,string))))
+  `(or (str:starts-with? ,prefix ,string)
+       ,@(loop for pre in prefixs collect `(str:starts-with? ,pre ,string))))
 
-(defun read-and-eval (stream char1 char2) (declare (ignore char1 char2)) (read stream t nil t))
+(defun read-and-eval (stream char1 char2)
+  (declare (ignore char1 char2)) (read stream t nil t))
 
 (set-dispatch-macro-character #\# #\n #'read-and-eval)
 
-(defun lisp-code-p (string) (start-with-p string "'(" "#(" "(" "#x" "#b" "#c" "#n"))
+(defun lisp-code-p (string)
+  (start-with-p string "'(" "#(" "(" "#x" "#b" "#c" "#n"))
+
+(defun print-hash-table (table)
+  (maphash (lambda (key value)
+             (print key)
+             (print value))
+           table))
+
+(defun print-result (result)
+  (cond
+    ((typep result 'hash-table) (print-hash-table result))
+    (t (print result))))
 
 (defun parse-argument (argument)
   (cond
@@ -52,15 +66,20 @@
         (format t "~A~%" (get-function-arguments (eval fn)))
         (apply (if (functionp fn) fn (eval fn)) arguments))))
 
+(defun default-after-callback (args result)
+  (declare (ignorable args))
+  (print-result result))
+
 (defclass command-line-interface ()
   ((cmds :accessor cli-cmds :initarg :cmds :initform '())
    (docs :accessor cli-docs :initarg :docs :initform nil)
    (help :initarg :help :initform nil)
-   (after :initarg :after :initform nil)
+   (after :initarg :after :initform #'default-after-callback)
    (before :initarg :before :initform nil)
    (default :accessor cli-default :initarg :default :initform nil)))
 
 (defmethod display-commands ((x command-line-interface))
+  "show commands"
   (let ((cmds (cli-cmds x)))
     (format t "~{  ~A~}~%"
             (mapcar (lambda (item)
@@ -81,7 +100,9 @@
          (args (cdr arguments))
          (result))
     (if (not (or cmd default))
+        ;;
         (display-commands instance)
+        ;;
         (progn
           (when before (funcall (eval before) args))
           (setf result (if cmd
