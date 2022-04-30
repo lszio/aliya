@@ -2,7 +2,7 @@
   :version "0.1.0"
   :author ""
   :license ""
-  :depends-on ()
+  :depends-on ("clish")
   :components ((:module "src"
                 :components
                 ((:file "main"))))
@@ -13,9 +13,10 @@
   :author ""
   :license ""
   :depends-on ("loong"
-               "rove")
+               "fiveam")
   :components ((:module "tests"
                 :components
                 ((:file "main"))))
   :description "Test system for loong"
-  :perform (test-op (op c) (symbol-call :rove :run c)))
+  ;; :perform (test-op (op c) (symbol-call :rove :run c))
+  :perform (test-op (op c) (symbol-call :fiveam :run! :loong)))

@@ -1,11 +1,9 @@
-(defpackage loong/tests/main
-  (:use :cl
-        :loong
-        :rove))
-(in-package :loong/tests/main)
+(defpackage loong/tests
+  (:use :cl :fiveam :loong))
+(in-package :loong/tests)
 
-;; NOTE: To run this test file, execute `(asdf:test-system :loong)' in your Lisp.
+(def-suite :loong)
+(in-suite :loong)
 
-(deftest test-target-1
-  (testing "should (= 1 1) to be true"
-    (ok (= 1 1))))
+(test test-base
+      (is (equal (+ 1 2) 3)))
