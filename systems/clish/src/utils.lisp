@@ -66,8 +66,8 @@
          (begin (if section (position begin-mark content :test #'equal) 0))
          (end (if (and section begin) (position end-mark content :test #'equal :start begin) content-length)))
 
-    (when (null (position module '("bash" "zsh" "fish" "profile") :test #'equal))
-      (maintain-entry :insert (format nil "~A ~A" #+os-windows "." #-os-windows "source" path)))
+    ;; (when (null (position module '("bash" "zsh" "fish" "profile") :test #'equal))
+    ;;   (maintain-entry :insert (format nil "~A ~A" #+os-windows "." #-os-windows "source" path)))
 
     `(let ((,ref (list ,@(if (and section begin) (subseq content (+ begin 1) end) content))))
         ,@body

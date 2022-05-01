@@ -30,10 +30,12 @@
   (car (member name *system-asds* :key #'pathname-name :test #'equal)))
 
 (defun test-systems (&rest args)
+  "Test systems"
   (let ((systems (if args (mapcar #'name->path args) *system-asds*)))
     (format nil "~{~A~%~}" (test-asd-systems systems))))
 
 (defun list-systems ()
+  "List all systems in this folder"
   *system-asds*)
 
 (clish:defcli cli

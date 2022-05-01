@@ -41,10 +41,9 @@
   (let ((script (read-line stream)));; FIXME need double #\NewLine
     (run/i script)))
 
-(defun main ()
+(defun main (&rest args)
+  (declare (ignorable args))
   (repl))
 
 (defcli cli ()
-  (nil #'repl)
-  ("help" (lambda (command) (format t "Help ~a" command))))
-
+  (:default #'main))

@@ -44,7 +44,7 @@
     (t result)))
 
 (defun print-result (result)
-  (pprint (result-wrapper result))
+  (princ (result-wrapper result))
   (format t "~%"))
 
 (defun parse-argument (argument)
@@ -97,7 +97,7 @@
   (let ((cmds (cli-cmds x))
         (docs (cli-docs x)))
     (if docs (format t "~%~A" docs))
-    (format t "~%~{  ~A~}~%"
+    (format t "~%Commands:~%~{  ~A~}~%"
             (mapcar (lambda (item)
                       (format nil "~9:A: ~A~%" (car item) (get-function-arguments (eval (cadr item)))))
                     cmds))))
@@ -134,7 +134,7 @@
           (setf (getf config (car cmd)) (cadr cmd))
           (push cmd cmds)))
     `(progn
-       (defparameter ,name (make-instance 'command-line-interface ,@config :cmds ',cmds))
+       (defparameter ,name (make-instance 'command-line-interface ,@config :cmds ',(reverse cmds)))
        (defun ,name (&rest arguments)
          ,docs
          (dispatch-command ,name arguments)))))

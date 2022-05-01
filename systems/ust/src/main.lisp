@@ -113,6 +113,7 @@
         (format t "No available command for script ~A~%" path))))
 
 (defun run-script (arguments &optional defaults)
+  "run scripts"
   (let ((name (car arguments))
         (args (cdr arguments))
         (scripts (or defaults (cdr (assoc :scripts *cache*)))))
@@ -128,6 +129,7 @@
         (print scripts))))
 
 (defun list-scripts ()
+  "list all scripts"
   (update-cache :scripts
                 (apply #'append
                        (loop for folder in (cdr (assoc :repos *config*))
@@ -137,12 +139,15 @@
   (print (cdr (assoc :scripts *cache*))))
 
 (defun display-script-info (&rest scripts)
-  ;;TODO
   scripts)
 
 (defun dispatch (action &rest scripts)
   (dolist (script scripts)
     (run-script (list script action))))
+
+(defun dispatch-uninstall (&rest scripts) "dispatch uninstall action for scripts" (apply #'dispatch (cons "uninstall" scripts)))
+(defun dispatch-install (&rest scripts) "dispatch install action for scripts" (apply #'dispatch (cons "install" scripts)))
+(defun dispatch-update (&rest scripts) "dispatch update action for scripts" (apply #'dispatch (cons "update" scripts)))
 
 (defun check (&rest args)
   (when (and (not (eq (intern "LIST" 'command) (car args)))
@@ -151,11 +156,11 @@
     (list-scripts)))
 
 (clish:defcli cli (:docs "Ust cli")
-  (:default (lambda (&rest args) (run-script args)))
+  (:default (lambda (&rest args) "default action" (run-script args)))
   (:before #'check)
   (:after (lambda (&rest args) (declare (ignore args)) (save-cache)))
   (info #'display-script-info)
   (list #'list-scripts)
-  (update (lambda (&rest scripts) (apply #'dispatch (cons "update" scripts))))
-  (install (lambda (&rest scripts) (apply #'dispatch (cons "install" scripts))))
-  (uninstall (lambda (&rest scripts) (apply #'dispatch (cons "uninstall" scripts)))))
+  (update #'dispatch-update)
+  (install #'dispatch-install)
+  (uninstall #'dispatch-uninstall))
