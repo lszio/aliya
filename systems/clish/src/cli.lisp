@@ -4,9 +4,13 @@
 
 ;; utilities
 (defun get-function-arguments (fn)
-  (let ((stream (make-string-output-stream)))
-    (describe fn stream)
-    (car (member "Lambda-list:" (str:split #\NewLine (get-output-stream-string stream)) :test #'search))))
+  (let ((str (make-array '(0) :element-type 'base-char :fill-pointer 0 :adjustable t)))
+    (with-output-to-string (out str)
+      (describe fn out)
+      (let* ((lines (str:split #\NewLine str))
+             (params (subseq (car (member "Lambda-list:" lines :test #'search)) 13))
+             (docs (subseq (or (cadr (member "Documentation:" lines :test #'search)) "  ") 2)))
+        (format nil "~A : ~A" params docs)))))
 
 (defun trim (string &optional (char #\Space))
  (if (char= (char string 0) char)
@@ -33,11 +37,15 @@
 (defun result-wrapper (result)
   (cond
     ((hash-table-p result) (hash-table->alist result))
-    ((listp result) (mapcar #'result-wrapper result))
+    ((listp result) (if (listp (cdr result))
+                        (mapcar #'result-wrapper result)
+                        (cons (result-wrapper (car result))
+                              (result-wrapper (cdr result)))))
     (t result)))
 
 (defun print-result (result)
-  (pprint (result-wrapper result)))
+  (pprint (result-wrapper result))
+  (format t "~%"))
 
 (defun parse-argument (argument)
   (cond
@@ -73,18 +81,23 @@
   (declare (ignorable args))
   (print-result result))
 
+(defun default-before-callback (args)
+  (if args (format t "~%Evaling with args: ~{ ~a ~}" args)))
+
 (defclass command-line-interface ()
   ((cmds :accessor cli-cmds :initarg :cmds :initform '())
    (docs :accessor cli-docs :initarg :docs :initform nil)
    (help :initarg :help :initform nil)
    (after :initarg :after :initform #'default-after-callback)
-   (before :initarg :before :initform nil)
+   (before :initarg :before :initform #'default-before-callback)
    (default :accessor cli-default :initarg :default :initform nil)))
 
 (defmethod display-commands ((x command-line-interface))
   "show commands"
-  (let ((cmds (cli-cmds x)))
-    (format t "~{  ~A~}~%"
+  (let ((cmds (cli-cmds x))
+        (docs (cli-docs x)))
+    (if docs (format t "~%~A" docs))
+    (format t "~%~{  ~A~}~%"
             (mapcar (lambda (item)
                       (format nil "~9:A: ~A~%" (car item) (get-function-arguments (eval (cadr item)))))
                     cmds))))
@@ -102,10 +115,8 @@
                    (assoc (string-upcase first) commands :test #'string=)))
          (args (cdr arguments))
          (result))
-    (if (not (or cmd default))
-        ;;
+    (if (or (member :help args) (not (or cmd default)))
         (display-commands instance)
-        ;;
         (progn
           (when before (funcall (eval before) args))
           (setf result (if cmd
@@ -170,4 +181,3 @@
              (format t "Clean alias in clish#rosw~%")
              (with-profile (ctx :section "rosw")
                (setf ctx nil))))))
-
