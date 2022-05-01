@@ -25,16 +25,19 @@
 (defun lisp-code-p (string)
   (start-with-p string "'(" "#(" "(" "#x" "#b" "#c" "#n"))
 
-(defun print-hash-table (table)
-  (maphash (lambda (key value)
-             (print key)
-             (print value))
-           table))
+(defun hash-table->alist (table)
+  (let ((lst '()))
+    (maphash (lambda (k v) (push (cons k (result-wrapper v)) lst)) table)
+    (reverse lst)))
+
+(defun result-wrapper (result)
+  (cond
+    ((hash-table-p result) (hash-table->alist result))
+    ((listp result) (mapcar #'result-wrapper result))
+    (t result)))
 
 (defun print-result (result)
-  (cond
-    ((typep result 'hash-table) (print-hash-table result))
-    (t (print result))))
+  (pprint (result-wrapper result)))
 
 (defun parse-argument (argument)
   (cond
