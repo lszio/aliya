@@ -6,4 +6,8 @@
    ;; path
    :filep :folderp :folder-exists :path :map-child
    ;; system
-   :shell :command-exists-p :toggle-feature))
+   :shell :command-exists-p :toggle-feature
+   ;; config
+   :get-config :set-config
+   ;; cli
+   :cli))
