@@ -9,6 +9,8 @@
                 ((:file "package")
                  (:file "utils")
                  (:file "cli")
+                 (:file "config")
+                 (:file "repl")
                  (:file "core"))))
   :description ""
   :in-order-to ((test-op (test-op "clish/tests"))))
