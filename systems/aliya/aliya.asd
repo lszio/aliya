@@ -11,7 +11,7 @@
   :version "0.1.0"
   :author "Liszt21"
   :license ""
-  :depends-on ()
+  :depends-on ("likit" "clish" "emacy" "ust" "loong")
   :serial t
   :components ((:module "src"
                         :components

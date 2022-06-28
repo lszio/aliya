@@ -1,13 +1,15 @@
-* Aliya 
-my lisp world
+:PROPERTIES:
+:ID:       aliya
+:END:
+#+TITLE: Aliya
+My common lisp world
 
-** systems
+* Systems
+- aliya
+- clish
+- emacy
 - likit
-
-** Author
-
-+ Liszt21 (1832666492@qq.com)
-
-** Copyright
-
-Copyright (c) 2021 Liszt21 (1832666492@qq.com)
+- lisql
+- loong
+- malth
+- ust
