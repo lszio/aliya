@@ -10,8 +10,7 @@
                  (:file "utils")
                  (:file "cli")
                  (:file "config")
-                 (:file "repl")
-                 (:file "core"))))
+                 (:file "repl"))))
   :description ""
   :in-order-to ((test-op (test-op "clish/tests"))))
 

@@ -181,3 +181,8 @@
              (format t "Clean alias in clish#rosw~%")
              (with-profile (ctx :section "rosw")
                (setf ctx nil))))))
+
+(defcli cli (:docs "Clish: command line interafce for common lisp")
+  #+os-windows (roswell #'rosw)
+  (config #'config-cli)
+  (:default #'repl))
