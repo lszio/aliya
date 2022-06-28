@@ -182,6 +182,11 @@
              (with-profile (ctx :section "rosw")
                (setf ctx nil))))))
 
+(defcli config-cli
+  (all #'load-configs)
+  (get #'get-config)
+  (set #'set-config))
+
 (defcli cli (:docs "Clish: command line interafce for common lisp")
   #+os-windows (roswell #'rosw)
   (config #'config-cli)

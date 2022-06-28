@@ -43,7 +43,3 @@
     (with-open-file (out file :direction :output :if-exists :supersede)
       (print (acons key value config) out))))
 
-(defcli config-cli
-  (all #'load-configs)
-  (get #'get-config)
-  (set #'set-config))
