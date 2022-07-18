@@ -75,7 +75,7 @@
     ("doomemacs"
      (env ("DOOMDIR"))
      (repo
-      (module . "https://github.com/hlissner/doom-emacs")
+      (module . "https://github.com/doomemacs/doomemacs")
       (config . "https://github.com/Liszt21/.doom.d")))))
 
 (defun save-profiles (&optional (profile-path "~/.emacs-profiles.el"))
