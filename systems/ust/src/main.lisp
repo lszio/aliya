@@ -32,13 +32,14 @@
   (load-file
     #p"~/.config/ust/config"
     (list (list :commands
-                (cons :lisp "ros")
-                (cons :py "python")
+                (cons :nu "nu")
                 (cons :js "node")
                 (cons :ts "node")
-                (cons :jl "julia")
                 (cons :pl "perl")
+                (cons :jl "julia")
+                (cons :py "python")
                 (cons :go "go run")
+                (cons :hy "hy")
                 (cons :hs "runhaskell")
                 (cons :lua "lua")
                 (cons :php "php")
@@ -46,6 +47,7 @@
                 (cons :mjs "zx")
                 (cons :nim "nim r")
                 (cons :scm "guile --no-auto-compile")
+                (cons :lisp "ros")
                 (cons :ipynb "jupyter nbconvert --to markdown --stdout --execute")
                 #-os-windows (cons :sh "bash")
                 #+os-windows (cons :cmd "cmd")
@@ -142,8 +144,7 @@
                              collect scripts)))
   (print (cdr (assoc :scripts *cache*))))
 
-(defun display-script-info (&rest scripts)
-  scripts)
+(defun display-script-info (&rest scripts) scripts)
 
 (defun dispatch (action &rest scripts)
   (dolist (script scripts)
