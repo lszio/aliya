@@ -56,8 +56,11 @@
                 #+os-windows (cons :ps1 "powershell"))
           (cons :repos
             (list #p"~/.dotfiles/scripts/"
+                  #p"~/.dotfiles/script/"
                   #p"~/.config/ust/scripts/"
-                  #p"~/.scripts/")))))
+                  #p"~/.config/ust/script/"
+                  #p"~/.scripts/"
+                  #p"~/.script/")))))
 
 (defun load-cache () (load-file #p"~/.config/ust/cache" '((:scripts))))
 
