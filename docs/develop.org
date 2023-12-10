@@ -1,0 +1,7 @@
+#+TITLE: Develop with Common Lisp
+
+* Create Project
+#+BEGIN_SRC lisp
+(ql:quickload cl-project)
+(cl-project/make-project #p"./foo")
+#+END_SRC

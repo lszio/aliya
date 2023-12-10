@@ -1,5 +1,31 @@
 * Lisql 
-
+Query Language
 ** Usage
 
 ** Installation
+
+** Develop
+#+begin_src sql
+-- Select
+select * from xxx where xx = xx
+
+-- File & Folder
+select * from xxx.xxx
+
+#+end_src
+
+#+begin_src lisp
+#(1 2 3 #(4 5 6 #(7 8 9)))
+
+((:a . 1) (:b . 2) (:c (:d . 3) (:e . 4) (:f (:g (:h . 5)))))
+#+end_src
+
+** Features
+- [ ] query folders & files metadata
+- [ ] update folders & files metadata
+- [ ] query & update config files
+  - [ ] lisp
+  - [ ] yaml
+  - [ ] json
+  - [ ] csv
+  - [ ] ini

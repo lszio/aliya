@@ -1,5 +1,0 @@
-# Lisql
-
-## Usage
-
-## Installation

@@ -17,3 +17,7 @@ app
 .likit
 .clish
 *.ipynb
+
+.lsp
+.joyride
+.clj-kondo

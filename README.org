@@ -2,14 +2,15 @@
 :ID:       aliya
 :END:
 #+TITLE: Aliya
-My common lisp world
 
 * Systems
-- aliya
-- clish
-- emacy
-- likit
-- lisql
-- loong
-- malth
-- ust
+- aliya :: merge
+- clish :: cli tool
+- likit :: kits
+- emacy :: emacs tool
+- lisql :: db
+- loong :: package manager
+- malth :: math thing
+
+- ust :: script tool
+- vmm :: virtual machine manager
